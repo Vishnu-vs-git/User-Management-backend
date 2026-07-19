@@ -1,6 +1,7 @@
 import { RegisterDTO } from "../../dto/register.dto";
+import { UserDTO } from "../../dto/user.response.dto";
 
 export interface IUserRepository {
-  createUser(data: RegisterDTO): Promise<void>;
-  findByEmail(email: string): Promise<any>;
+  createUser(data: RegisterDTO): Promise<UserDTO>;
+  findByEmail(email: string): Promise<UserDTO| null>;
 }
