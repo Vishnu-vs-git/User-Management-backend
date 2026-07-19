@@ -5,7 +5,7 @@ import { UserDTO } from "../dto/user.response.dto";
 import { IUserRepository } from "../repositories/interfaces/user.repository.interface";
 import { JwtService } from "./jwt.service";
 import { LoginResponseDTO } from "../dto/login.response.dto";
-import { AUTH_MESSAGES } from "../constants/message";
+import { AUTH_MESSAGES, USER_MESSAGES } from "../constants/message";
 import { AppError } from "../errors/AppError";
 import { HTTP_STATUS } from "../constants/http-status";
 
@@ -57,4 +57,16 @@ export class AuthService {
       refreshToken,
 };
   }
+  async getProfile(id: string): Promise<UserDTO> {
+    const user = await this.userRepository.findById(id);
+
+    if (!user) {
+        throw new AppError(
+            HTTP_STATUS.NOT_FOUND,
+            USER_MESSAGES.USER_NOT_FOUND
+        );
+    }
+
+    return user;
+}
 }

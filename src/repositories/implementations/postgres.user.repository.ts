@@ -39,4 +39,15 @@ export class PostgresUserRepository implements IUserRepository {
 
     return result.rows[0] ?? null;
   }
+  async findById(id: string): Promise<UserDTO | null> {
+      const result = await db.query<UserDTO>(
+        `
+         SELECT *
+         FROM users
+         WHERE id =$1
+        `,
+        [id]
+      )
+     return result.rows[0] ?? null;
+  }
 }
