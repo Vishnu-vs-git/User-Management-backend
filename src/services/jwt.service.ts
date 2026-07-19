@@ -1,5 +1,5 @@
 import jwt, { SignOptions } from "jsonwebtoken";
-import { UserDTO } from "../dto/user.response.dto";
+import {  UserResponseDTO } from "../dto/user.response.dto";
 import { JwtPayload } from "../types/jwt.payload";
 import { ENV } from "../utils/env";
 import { AppError } from "../errors/AppError";
@@ -7,7 +7,7 @@ import { HTTP_STATUS } from "../constants/http-status";
 import { AUTH_MESSAGES } from "../constants/message";
 
 export class JwtService {
-  generateAccessToken(user: UserDTO): string {
+  generateAccessToken(user: UserResponseDTO): string {
     return jwt.sign(
       {
         id: user.id,
@@ -21,7 +21,7 @@ export class JwtService {
     );
   }
 
-  generateRefreshToken(user: UserDTO): string {
+  generateRefreshToken(user: UserResponseDTO): string {
     return jwt.sign(
       {
         id: user.id,

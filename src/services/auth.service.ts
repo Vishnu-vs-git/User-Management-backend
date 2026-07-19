@@ -1,13 +1,15 @@
 import bcrypt from "bcrypt";
 import { RegisterDTO } from "../dto/register.dto";
 import { LoginDTO } from "../dto/login.dto";
-import { UserDTO } from "../dto/user.response.dto";
+
 import { IUserRepository } from "../repositories/interfaces/user.repository.interface";
 import { JwtService } from "./jwt.service";
 import { LoginResponseDTO } from "../dto/login.response.dto";
 import { AUTH_MESSAGES, USER_MESSAGES } from "../constants/message";
 import { AppError } from "../errors/AppError";
 import { HTTP_STATUS } from "../constants/http-status";
+import { UserResponseDTO } from "../dto/user.response.dto";
+import { UserMapper } from "../mapper/user.mapper";
 
 export class AuthService {
   constructor(
@@ -15,7 +17,7 @@ export class AuthService {
     private readonly jwtService: JwtService
   ) {}
 
-  async register(data: RegisterDTO): Promise<UserDTO> {
+  async register(data: RegisterDTO): Promise<UserResponseDTO> {
    
     const existingUser = await this.userRepository.findByEmail(data.email);
 
@@ -28,8 +30,8 @@ export class AuthService {
       ...data,
       password: hashedPassword,
     });
-
-    return user;
+    
+    return UserMapper.toDTO(user)
   }
 
   async login(data: LoginDTO): Promise<LoginResponseDTO> {
@@ -47,17 +49,18 @@ export class AuthService {
     if (!isPasswordMatch) {
       throw new AppError(HTTP_STATUS.UNAUTHORIZED,AUTH_MESSAGES.INVALID_CREDENTIALS);
     }
-   const accessToken = this.jwtService.generateAccessToken(user);
+     const payload = UserMapper.toDTO(user)
+   const accessToken = this.jwtService.generateAccessToken(payload);
 
-  const refreshToken = this.jwtService.generateRefreshToken(user);
-
+  const refreshToken = this.jwtService.generateRefreshToken(payload);
+      const userData = UserMapper.toDTO(user);
      return {
-       user,
+       user:userData,
       accessToken,
       refreshToken,
 };
   }
-  async getProfile(id: string): Promise<UserDTO> {
+  async getProfile(id: string): Promise<UserResponseDTO> {
     const user = await this.userRepository.findById(id);
 
     if (!user) {
@@ -67,6 +70,6 @@ export class AuthService {
         );
     }
 
-    return user;
+    return UserMapper.toDTO(user);
 }
 }

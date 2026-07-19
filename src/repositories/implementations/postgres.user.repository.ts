@@ -1,11 +1,10 @@
 import { db } from "../../config/db";
 import { RegisterDTO } from "../../dto/register.dto";
-import { UserDTO } from "../../dto/user.response.dto";
+import { User } from "../../types/user.type";
 import { IUserRepository } from "../interfaces/user.repository.interface";
-
 export class PostgresUserRepository implements IUserRepository {
-  async createUser(data: RegisterDTO): Promise<UserDTO> {
-    const result = await db.query<UserDTO>(
+  async createUser(data: RegisterDTO): Promise<User> {
+    const result = await db.query<User>(
       `
       INSERT INTO users (
         username,
@@ -27,8 +26,8 @@ export class PostgresUserRepository implements IUserRepository {
     return result.rows[0]!;
   }
 
-  async findByEmail(email: string): Promise<UserDTO | null> {
-    const result = await db.query<UserDTO>(
+  async findByEmail(email: string): Promise<User| null> {
+    const result = await db.query<User>(
       `
       SELECT *
       FROM users
@@ -39,8 +38,8 @@ export class PostgresUserRepository implements IUserRepository {
 
     return result.rows[0] ?? null;
   }
-  async findById(id: string): Promise<UserDTO | null> {
-      const result = await db.query<UserDTO>(
+  async findById(id: string): Promise<User | null> {
+      const result = await db.query<User>(
         `
          SELECT *
          FROM users
