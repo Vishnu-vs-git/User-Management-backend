@@ -6,7 +6,7 @@ export const AUTH_MESSAGES = {
   LOGOUT_SUCCESS: "Logout successful",
   UNAUTHORIZED: "Unauthorized",
   FORBIDDEN: "Forbidden",
-  INVALID_TOKEN:"Invalid token"
+  INVALID_TOKEN: "Invalid token",
 } as const;
 
 export const USER_MESSAGES = {

@@ -1,7 +1,5 @@
-
 import { UserResponseDTO } from "../dto/user.response.dto";
 import { User } from "../types/user.type";
-
 
 export class UserMapper {
   static toDTO(user: User): UserResponseDTO {

@@ -4,5 +4,4 @@ export interface UserResponseDTO {
   email: string;
   mobile: string;
   role: string;
- 
 }

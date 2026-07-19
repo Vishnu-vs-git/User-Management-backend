@@ -15,18 +15,13 @@ export class PostgresUserRepository implements IUserRepository {
       VALUES ($1, $2, $3, $4)
       RETURNING *;
       `,
-      [
-        data.username,
-        data.email,
-        data.mobile,
-        data.password,
-      ]
+      [data.username, data.email, data.mobile, data.password]
     );
 
     return result.rows[0]!;
   }
 
-  async findByEmail(email: string): Promise<User| null> {
+  async findByEmail(email: string): Promise<User | null> {
     const result = await db.query<User>(
       `
       SELECT *
@@ -39,14 +34,14 @@ export class PostgresUserRepository implements IUserRepository {
     return result.rows[0] ?? null;
   }
   async findById(id: string): Promise<User | null> {
-      const result = await db.query<User>(
-        `
+    const result = await db.query<User>(
+      `
          SELECT *
          FROM users
          WHERE id =$1
         `,
-        [id]
-      )
-     return result.rows[0] ?? null;
+      [id]
+    );
+    return result.rows[0] ?? null;
   }
 }
