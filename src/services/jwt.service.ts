@@ -14,9 +14,9 @@ export class JwtService {
         email: user.email,
         role: user.role,
       },
-      process.env.JWT_ACCESS_SECRET as string,
+      ENV.JWT_ACCESS_SECRET as string,
       {
-        expiresIn: process.env.JWT_ACCESS_EXPIRES_IN as SignOptions["expiresIn"],
+        expiresIn: ENV.JWT_ACCESS_EXPIRES_IN as SignOptions["expiresIn"],
       }
     );
   }
@@ -28,9 +28,9 @@ export class JwtService {
         email: user.email,
         role: user.role,
       },
-      process.env.JWT_REFRESH_SECRET as string,
+      ENV.JWT_REFRESH_SECRET as string,
       {
-        expiresIn: process.env.JWT_REFRESH_EXPIRES_IN as SignOptions["expiresIn"],
+        expiresIn: ENV.JWT_REFRESH_EXPIRES_IN as SignOptions["expiresIn"],
       }
     );
   }

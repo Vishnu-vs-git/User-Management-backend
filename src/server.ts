@@ -1,13 +1,14 @@
 import app from "./app";
-import { db } from "./config/db";
+import { connectDatabase } from "./config/database";
 import { ENV } from "./utils/env";
 
 const PORT = ENV.PORT|| 5000;
 
+
+
 async function startServer(){
   try{
-     await db.query("SELECT NOW()");
-     console.log("Database connected");
+        await connectDatabase();
      app.listen(PORT,() => {
       console.log(`Server is running on port ${PORT}`)
      })

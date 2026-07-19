@@ -12,7 +12,8 @@ export const up = (pgm) => {
   pgm.createTable("users",{
      id:{
       type:"uuid",
-      primaryKey:true
+      primaryKey:true,
+      default: pgm.func("gen_random_uuid()")
      },
      username:{
       type:"varchar(100)",

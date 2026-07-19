@@ -1,7 +1,7 @@
 import { AuthController } from "../controllers/auth.controller";
 import { AuthMiddleware } from "../middlewares/auth.middleware";
 import { PostgresUserRepository } from "../repositories/implementations/postgres.user.repository";
-import { AuthService } from "../services/auth.service,";
+import { AuthService } from "../services/auth.service";
 import { JwtService } from "../services/jwt.service";
 
 

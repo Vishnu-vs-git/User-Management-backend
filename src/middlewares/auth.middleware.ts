@@ -9,9 +9,10 @@ export class AuthMiddleware {
  constructor(
    private readonly jwtService: JwtService
  ){}
- authenticate(req:Request,res:Response,next:NextFunction):void {
+ authenticate = (req:Request,res:Response,next:NextFunction):void => {
    try{
       const token = req.cookies?.accessToken;
+    
       if(!token) {
          throw new AppError(
           HTTP_STATUS.UNAUTHORIZED,

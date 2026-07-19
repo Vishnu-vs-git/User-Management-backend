@@ -1,9 +1,10 @@
 import { Request, Response, NextFunction } from "express";
-import { AuthService } from "../services/auth.service,";
+
 import { HTTP_STATUS } from "../constants/http-status";
 import { AUTH_MESSAGES } from "../constants/message";
 import { accessTokenCookieOptions, refreshTokenCookieOptions } from "../utils/cookie";
 import { TokenType } from "../constants/token.enum";
+import { AuthService } from "../services/auth.service";
 
 
 export class AuthController {
@@ -11,11 +12,11 @@ export class AuthController {
     private readonly authService: AuthService
   ) {}
 
-  async register(
+  register = async (
     req: Request,
     res: Response,
     next: NextFunction
-  ) {
+  ) => {
     try {
       const user = await this.authService.register(req.body);
 
@@ -29,11 +30,11 @@ export class AuthController {
     }
   }
 
-  async login(
+ login = async (
     req: Request,
     res: Response,
     next: NextFunction
-  ) {
+  ) => {
     try {
       const { user, accessToken, refreshToken } =
         await this.authService.login(req.body);
@@ -59,11 +60,11 @@ export class AuthController {
       next(error);
     }
   }
-  async me(
+ me = async (
     req: Request,
     res: Response,
     next: NextFunction
-) {
+)  => {
     try {
 
         const user = await this.authService.getProfile(req.user.id);
@@ -77,4 +78,17 @@ export class AuthController {
         next(error);
     }
 }
+logout = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  res.clearCookie(TokenType.ACCESS);
+  res.clearCookie(TokenType.REFRESH);
+
+  return res.status(HTTP_STATUS.OK).json({
+    success: true,
+    message: AUTH_MESSAGES.LOGOUT_SUCCESS,
+  });
+};
 }
