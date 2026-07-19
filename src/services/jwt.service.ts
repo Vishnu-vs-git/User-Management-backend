@@ -1,5 +1,10 @@
 import jwt, { SignOptions } from "jsonwebtoken";
 import { UserDTO } from "../dto/user.response.dto";
+import { JwtPayload } from "../types/jwt.payload";
+import { ENV } from "../utils/env";
+import { AppError } from "../errors/AppError";
+import { HTTP_STATUS } from "../constants/http-status";
+import { AUTH_MESSAGES } from "../constants/message";
 
 export class JwtService {
   generateAccessToken(user: UserDTO): string {
@@ -30,17 +35,29 @@ export class JwtService {
     );
   }
 
-  verifyAccessToken(token: string) {
-    return jwt.verify(
-      token,
-      process.env.JWT_ACCESS_SECRET as string
+  verifyAccessToken(token: string):JwtPayload {
+     const decoded = jwt.verify(
+        token,
+        ENV.JWT_ACCESS_SECRET as string
     );
+
+    if (typeof decoded === "string") {
+        throw new AppError(HTTP_STATUS.UNAUTHORIZED,AUTH_MESSAGES.INVALID_TOKEN);
+    }
+
+    return decoded as JwtPayload;
   }
 
-  verifyRefreshToken(token: string) {
-    return jwt.verify(
-      token,
-      process.env.JWT_REFRESH_SECRET as string
-    );
+  verifyRefreshToken(token: string):JwtPayload {
+     const decoded = jwt.verify(
+        token,
+        ENV.JWT_REFRESH_SECRET as string
+    )
+
+    if (typeof decoded === "string") {
+        throw new AppError(HTTP_STATUS.UNAUTHORIZED,AUTH_MESSAGES.INVALID_TOKEN);
+    }
+
+    return decoded as JwtPayload;
   }
 }
